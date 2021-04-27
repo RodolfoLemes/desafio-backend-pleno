@@ -1,0 +1,12 @@
+dist
+node_modules
+tmp/*.*
+tmp/uploads/*
+!tmp/.gitkeep
+!tmp/uploads/.gitkeep
+
+.DS_Store
+.env
+
+## tests
+coverage
