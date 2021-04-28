@@ -29,6 +29,12 @@ class TypeORMUsersRepository implements IUsersRepository {
 
     return user;
   }
+
+  public async findByUsername(username: string): Promise<User | undefined> {
+    const user = this.ormRepository.findOne({ where: { username } });
+
+    return user;
+  }
 }
 
 export default TypeORMUsersRepository;
