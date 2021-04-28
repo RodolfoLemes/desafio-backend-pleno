@@ -4,6 +4,8 @@ import multer from 'multer';
 
 const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp');
 
+const mimeTypes = ['image/png', 'image/jpeg', 'image/bmp', 'image/webp'];
+
 interface IUploadConfig {
   driver: 's3' | 'disk';
 
@@ -46,6 +48,12 @@ export default {
         return callback(null, fileName);
       },
     }),
+    fileFilter: (request, file, callback) => {
+      if (!mimeTypes.includes(file.mimetype)) {
+        return callback(new Error("File doesn't supported"));
+      }
+      return callback(null, true);
+    },
   },
 
   image: {
