@@ -14,6 +14,12 @@ import TypeORMManagersRepository from '@modules/users/repositories/implementatio
 import IAdminsRepository from '@modules/users/repositories/IAdminsRepository';
 import TypeORMAdminsRepository from '@modules/users/repositories/implementations/TypeORMAdminsRepository';
 
+import IMoviesRepository from '@modules/movies/repositories/IMoviesRepository';
+import TypeORMMoviesRepository from '@modules/movies/repositories/implementations/TypeORMMoviesRepository';
+
+import ICategoriesRepository from '@modules/movies/repositories/ICategoriesRepository';
+import TypeORMCategoriesRepository from '@modules/movies/repositories/implementations/TypeORMCategoriesRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   TypeORMUsersRepository,
@@ -32,4 +38,14 @@ container.registerSingleton<IManagersRepository>(
 container.registerSingleton<IAdminsRepository>(
   'AdminsRepository',
   TypeORMAdminsRepository,
+);
+
+container.registerSingleton<IMoviesRepository>(
+  'MoviesRepository',
+  TypeORMMoviesRepository,
+);
+
+container.registerSingleton<ICategoriesRepository>(
+  'CategoriesRepository',
+  TypeORMCategoriesRepository,
 );
