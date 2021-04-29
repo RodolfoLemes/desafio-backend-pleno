@@ -1,8 +1,11 @@
 import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import AuthorizeMovieService from '../services/AuthorizeMovieService';
 import CreateMovieService from '../services/CreateMovieService';
 import ListMoviesService from '../services/ListMoviesService';
+import ReleaseMovieService from '../services/ReleaseMovieService';
+import ShowMovieService from '../services/ShowMovieService';
 
 export default class MoviesController {
   async create(req: Request, res: Response): Promise<Response> {
@@ -41,5 +44,33 @@ export default class MoviesController {
     });
 
     return res.json(classToClass(data));
+  }
+
+  async show(req: Request, res: Response): Promise<Response> {
+    const { movie_id: movieId } = req.params;
+
+    const showMovie = container.resolve(ShowMovieService);
+    const movie = await showMovie.execute({ movieId });
+
+    return res.json(classToClass(movie));
+  }
+
+  async release(req: Request, res: Response): Promise<Response> {
+    const { end_at: endAt } = req.body;
+    const { movie_id: movieId } = req.params;
+
+    const releaseMovie = container.resolve(ReleaseMovieService);
+    await releaseMovie.execute({ movieId, endAt });
+
+    return res.status(204).send();
+  }
+
+  async authorize(req: Request, res: Response): Promise<Response> {
+    const { movie_id: movieId } = req.params;
+
+    const authorizeMovie = container.resolve(AuthorizeMovieService);
+    await authorizeMovie.execute({ movieId });
+
+    return res.status(204).send();
   }
 }

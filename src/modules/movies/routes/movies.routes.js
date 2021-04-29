@@ -1,6 +1,7 @@
 import ensureFiles from '@modules/files/middlewares/ensureFiles';
 import pagination from '@modules/pagination/middlewares/pagination';
 import sorting from '@modules/sorting/middlewares/sorting';
+import ensureAuthentication from '@modules/users/middlewares/ensureAuthentication';
 import ensureAuthorization from '@modules/users/middlewares/ensureAuthorization';
 import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
@@ -41,6 +42,42 @@ router.get(
     },
   }),
   moviesController.list,
+);
+
+router.get(
+  '/:movie_id',
+  ensureAuthentication,
+  celebrate({
+    [Segments.PARAMS]: {
+      movie_id: Joi.string().uuid({ version: 'uuidv4' }).required(),
+    },
+  }),
+  moviesController.show,
+);
+
+router.patch(
+  '/:movie_id/release',
+  ensureAuthorization('manager'),
+  celebrate({
+    [Segments.BODY]: {
+      end_at: Joi.date().required(),
+    },
+    [Segments.PARAMS]: {
+      movie_id: Joi.string().uuid({ version: 'uuidv4' }).required(),
+    },
+  }),
+  moviesController.release,
+);
+
+router.patch(
+  '/:movie_id/authorize',
+  ensureAuthorization('admin'),
+  celebrate({
+    [Segments.PARAMS]: {
+      movie_id: Joi.string().uuid({ version: 'uuidv4' }).required(),
+    },
+  }),
+  moviesController.authorize,
 );
 
 export default router;

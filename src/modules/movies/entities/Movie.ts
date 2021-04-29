@@ -29,7 +29,7 @@ class Movie {
   @Column({ default: false })
   authorized: boolean;
 
-  @ManyToMany(() => Category)
+  @ManyToMany(() => Category, { eager: true, cascade: true })
   @JoinTable()
   categories: Category[];
 
