@@ -1,3 +1,4 @@
+import Pagination from '@modules/pagination';
 import { v4 as uuidv4 } from 'uuid';
 import Movie from '../../entities/Movie';
 import IMoviesRepository from '../IMoviesRepository';
@@ -30,6 +31,14 @@ class FakeMoviesRepository implements IMoviesRepository {
 
   public async findByName(name: string): Promise<Movie | undefined> {
     return this.movies.find(movie => movie.name === name);
+  }
+
+  public async find(): Promise<Pagination<Movie>> {
+    return {
+      values: this.movies,
+      total: this.movies.length,
+      totalPages: 1,
+    };
   }
 }
 

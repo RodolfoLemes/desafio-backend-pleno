@@ -1,4 +1,6 @@
 import ensureFiles from '@modules/files/middlewares/ensureFiles';
+import pagination from '@modules/pagination/middlewares/pagination';
+import sorting from '@modules/sorting/middlewares/sorting';
 import ensureAuthorization from '@modules/users/middlewares/ensureAuthorization';
 import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
@@ -19,6 +21,26 @@ router.post(
     },
   }),
   moviesController.create,
+);
+
+router.get(
+  '/',
+  ensureAuthorization(['manager', 'admin']),
+  pagination,
+  sorting,
+  celebrate({
+    [Segments.QUERY]: {
+      released: Joi.string().valid('true', 'false'),
+      authorized: Joi.string().valid('true', 'false'),
+      name: Joi.string(),
+      category: Joi.string(),
+      limit: Joi.number(),
+      page: Joi.number(),
+      order_by: Joi.string().valid('ASC', 'DESC'),
+      sort_by: Joi.string(),
+    },
+  }),
+  moviesController.list,
 );
 
 export default router;

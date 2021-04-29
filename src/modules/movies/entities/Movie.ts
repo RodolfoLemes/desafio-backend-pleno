@@ -26,6 +26,9 @@ class Movie {
   @Column({ default: false })
   released: boolean;
 
+  @Column({ default: false })
+  authorized: boolean;
+
   @ManyToMany(() => Category)
   @JoinTable()
   categories: Category[];
