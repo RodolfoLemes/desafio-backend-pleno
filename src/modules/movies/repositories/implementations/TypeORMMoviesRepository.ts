@@ -30,6 +30,10 @@ class TypeORMMoviesRepository implements IMoviesRepository {
     return this.ormRepository.save(movie);
   }
 
+  public async remove(movie: Movie): Promise<Movie> {
+    return this.ormRepository.remove(movie);
+  }
+
   public async findById(movieId: string): Promise<Movie | undefined> {
     const movie = this.ormRepository.findOne({ where: { id: movieId } });
 
@@ -79,6 +83,16 @@ class TypeORMMoviesRepository implements IMoviesRepository {
     } catch (error) {
       throw new AppError('Invalid column to sort by', 409);
     }
+  }
+
+  public async findAllByAuthorized(): Promise<Movie[]> {
+    const movies = await this.ormRepository
+      .createQueryBuilder('movie')
+      .where('movie.authorized = true')
+      .andWhere('movie.end_at < :today', { today: new Date() })
+      .getMany();
+
+    return movies;
   }
 }
 

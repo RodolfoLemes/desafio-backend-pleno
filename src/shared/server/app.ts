@@ -12,6 +12,7 @@ import routes from './routes';
 
 import '@shared/container';
 import '@shared/database';
+import '@modules/tasks';
 
 const app = express();
 

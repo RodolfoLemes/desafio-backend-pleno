@@ -8,6 +8,7 @@ import IFindMovieDTO from '../dtos/IFindMovieDTO';
 export default interface IMoviesRepository {
   create(data: ICreateMovieDTO): Promise<Movie>;
   save(movie: Movie): Promise<Movie>;
+  remove(movie: Movie): Promise<Movie>;
   findById(movieId: string): Promise<Movie | undefined>;
   findByName(name: string): Promise<Movie | undefined>;
   find(
@@ -15,4 +16,5 @@ export default interface IMoviesRepository {
     paginationOptions: IPaginationOptions,
     sortingOptions: ISortingOptions,
   ): Promise<Pagination<Movie>>;
+  findAllByAuthorized(): Promise<Movie[]>;
 }
