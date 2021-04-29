@@ -49,7 +49,7 @@ class TypeORMMoviesRepository implements IMoviesRepository {
   ): Promise<Pagination<Movie>> {
     let query = this.ormRepository
       .createQueryBuilder('movie')
-      .innerJoinAndSelect('movie.categories', 'categories')
+      .innerJoin('movie.categories', 'categories')
       .limit(limit)
       .offset((page - 1) * limit);
 
